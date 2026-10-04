@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>Foto</title>
+<meta name="description" content="Toca para ver la foto">
+
+<!--
+IMPORTANTE:
+Después de subir esta carpeta a internet, reemplaza TU-DOMINIO-AQUI
+por la dirección HTTPS real donde quede alojada.
+Ejemplo:
+https://misitio.netlify.app/preview_github_tiny.jpg
+-->
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Foto">
+<meta property="og:description" content="Toca para ver la foto">
+<meta property="og:image" content="https://psipuebla2026.github.io/Isma-/preview_github_tiny.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:url" content="https://psipuebla2026.github.io/Isma-/">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Foto">
+<meta name="twitter:description" content="Toca para ver la foto">
+<meta name="twitter:image" content="https://psipuebla2026.github.io/Isma-/preview_github_tiny.jpg">
+
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+#photoScreen,#prank,#final{position:fixed;inset:0}
+#photoScreen{display:flex;align-items:center;justify-content:center;background:#000;cursor:pointer}
+#photoScreen img{width:100%;height:100%;object-fit:contain;background:#000}
+.tap{
+ position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+ background:rgba(0,0,0,.60);color:#fff;padding:10px 15px;border-radius:22px;
+ font-size:14px;backdrop-filter:blur(4px)
+}
+#prank{display:none;background:#020502;color:#77ff8a;font-family:Consolas,monospace;padding:14px}
+.panel{height:100%;border:1px solid #21ff69;background:#061008;padding:16px;box-shadow:0 0 36px rgba(0,255,100,.18)}
+.title{font-size:21px;font-weight:800;letter-spacing:1px;margin-bottom:7px}
+.alert{color:#ff5151;font-weight:800;margin-bottom:14px}
+.row{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px dashed #204b29}
+.value{color:white;text-align:right}
+.bar{height:14px;border:1px solid #1f7433;background:#09160c;margin:16px 0;overflow:hidden}
+.fill{height:100%;width:0;background:#37ff6c;transition:width .25s}
+.log{height:27vh;overflow:hidden;font-size:12px;color:#9fd9aa;line-height:1.45;white-space:pre-line}
+.blink{animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.42}}
+#final{display:none;background:#101010;color:#fff;align-items:center;justify-content:center;text-align:center;padding:24px}
+#final h1{font-size:40px;margin:0 0 12px}
+#final p{font-size:18px;line-height:1.45}
+.safe{font-size:13px;color:#bbb;margin-top:16px}
+</style>
+</head>
+
+<body>
+
+<div id="photoScreen">
+  <img src="preview_github_tiny.jpg" alt="Fotografía">
+  <div class="tap">Toca la foto</div>
+</div>
+
+<div id="prank">
+  <div class="panel">
+    <div class="title blink">ACCESO REMOTO ESTABLECIDO</div>
+    <div class="alert">SINCRONIZACIÓN DE DISPOSITIVO EN CURSO</div>
+
+    <div class="row"><span>Llamadas respaldadas</span><span class="value" id="calls">0</span></div>
+    <div class="row"><span>Mensajes respaldados</span><span class="value" id="msgs">0</span></div>
+    <div class="row"><span>Fotografías procesadas</span><span class="value" id="photos">0</span></div>
+    <div class="row"><span>Información procesada</span><span class="value" id="mb">0 MB</span></div>
+
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<div id="final">
+  <div>
+    <h1>😂 ¡ERA BROMA!</h1>
+    <p>No se leyó, copió, envió ni bloqueó nada de tu teléfono.</p>
+    <div class="safe">Todo lo mostrado fue una simulación visual.</div>
+  </div>
+</div>
+
+<script>
+const photo=document.getElementById("photoScreen");
+const prank=document.getElementById("prank");
+const final=document.getElementById("final");
+const fill=document.getElementById("fill");
+const log=document.getElementById("log");
+
+const target={calls:129393,msgs:3949484,photos:3949484,mb:234};
+let p=0;
+
+function addLog(t){
+  log.textContent += "\n> " + t;
+  log.scrollTop = log.scrollHeight;
+}
+
+photo.onclick=async()=>{
+  photo.style.display="none";
+  prank.style.display="block";
+
+  try{
+    if(document.documentElement.requestFullscreen)
+      await document.documentElement.requestFullscreen();
+  }catch(e){}
+
+  addLog("Inicializando sesión...");
+  addLog("Verificando almacenamiento...");
+  addLog("Sincronización simulada iniciada.");
+
+  const timer=setInterval(()=>{
+    p += Math.floor(Math.random()*6)+4;
+    if(p>100)p=100;
+
+    fill.style.width=p+"%";
+    document.getElementById("calls").textContent=Math.floor(target.calls*p/100).toLocaleString();
+    document.getElementById("msgs").textContent=Math.floor(target.msgs*p/100).toLocaleString();
+    document.getElementById("photos").textContent=Math.floor(target.photos*p/100).toLocaleString();
+    document.getElementById("mb").textContent=(target.mb*p/100).toFixed(1)+" MB";
+
+    if(p>=20 && p<26) addLog("Indexando registros...");
+    if(p>=45 && p<51) addLog("Procesando archivos multimedia...");
+    if(p>=70 && p<76) addLog("Validando paquetes...");
+    if(p>=90 && p<96) addLog("Finalizando transferencia simulada...");
+
+    if(p>=100){
+      clearInterval(timer);
+      addLog("Proceso completado.");
+
+      setTimeout(()=>{
+        prank.style.display="none";
+        final.style.display="flex";
+        try{
+          if(document.fullscreenElement)
+            document.exitFullscreen();
+        }catch(e){}
+      },1400);
+    }
+  },300);
+};
+</script>
+
+</body>
+</html>
